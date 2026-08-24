@@ -1,0 +1,194 @@
+body {
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
+    margin: 0;
+    padding: 15px;
+    width: 100vw;
+    min-height: 100vh;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+}
+
+/* الحاوية الرئيسية شفافة بالكامل */
+.upload-container {
+    width: 100%;
+    max-width: 600px;
+    min-height: 94vh;
+    
+    margin: auto;
+    background: transparent;
+    padding: 15px;
+    box-sizing: border-box;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    color: #ffffff;
+}
+
+/* شريط تغيير الخلفية العلوي بتصميم زجاجي داكن عشان يبرز النص بوضوح */
+.bg-picker-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+}
+
+.btn-bg, .btn-bg-reset {
+    font-size: 13px;
+    padding: 7px 14px;
+    border-radius: 6px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+.btn-bg { background-color: #8e44ad; }
+.btn-bg-reset { background-color: #7f8c8d; }
+
+/* تكبير العناوين بخط أبيض مع ظل قوي جداً يضمن وضوحها على أي خلفية */
+h1 {
+    font-size: 26px;
+    margin: 15px 0 8px 0;
+    color: #ffffff;
+    font-weight: 900;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95), 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+p {
+    font-size: 15px;
+    margin-bottom: 15px;
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95);
+}
+
+/* نموذج رفع الملفات بخلفية زجاجية داكنة واضحة */
+form {
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(10px);
+    padding: 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+input[type="file"] {
+    padding: 10px;
+    border: 1px dashed rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+button[type="submit"] {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 17px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+/* مجموعة أزرار إدارة الملفات */
+.actions-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.btn-download-all, .btn-delete-all {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+.btn-download-all { background-color: #2980b9; }
+.btn-delete-all { background-color: #c0392b; }
+
+hr {
+    border: 0;
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+    margin: 18px 0;
+}
+
+/* قائمة الملفات بخط كبير وواضح مع ظل خفيف */
+#fileList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    max-height: 38vh;
+    overflow-y: auto;
+}
+
+li {
+    background: rgba(0, 0, 0, 0.60);
+    backdrop-filter: blur(8px);
+    margin: 10px 0;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.file-info {
+    text-align: right;
+    word-break: break-all;
+    font-size: 15px;
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.file-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.file-actions a, .btn-delete-single {
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    text-decoration: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.file-actions a { background-color: #3498db; }
+.btn-delete-single { background-color: #e74c3c; }
