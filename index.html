@@ -3,45 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تخزين الملفات المحلي</title>
+    <title>تخزين الملفات السحابي</title>
     <link rel="stylesheet" href="style.css">
-    
-    <!-- مكتبات ضغط وتنزيل كل الملفات -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
 <body>
 
     <div class="upload-container">
-        
-        <!-- قسم اختيار الخلفية المخصص -->
+        <!-- شريط تغيير الخلفية العلوي -->
         <div class="bg-picker-box">
-            <span>🖼️ خلفية الصفحة:</span>
-            <input type="file" id="bgInput" accept="image/*" style="display: none;">
-            <button type="button" class="btn-bg" onclick="document.getElementById('bgInput').click()">تغيير الصورة</button>
-            <button type="button" id="resetBgBtn" class="btn-bg-reset">إعادة الافتراضي</button>
+            <span>🖼️ خلفية الشاشة</span>
+            <div>
+                <input type="file" id="bgInput" accept="image/*" style="display: none;">
+                <button type="button" class="btn-bg" onclick="document.getElementById('bgInput').click()">تغيير</button>
+                <button type="button" id="resetBgBtn" class="btn-bg-reset">إعادة الافتراضي</button>
+            </div>
         </div>
 
-        <h1>تخزين الملفات السحابي (محلي)</h1>
-        <p>اختر الملفات لحفظها في ذاكرة المتصفح واسترجاعها بأي وقت</p>
+        <div>
+            <h1>تخزين الملفات السحابي</h1>
+            <p>اختر الملفات لحفظها في ذاكرة المتصفح</p>
 
-        <form id="uploadForm">
-            <input type="file" id="fileInput" required>
-            <button type="submit">رفع الملف الآن</button>
-        </form>
-
-        <hr>
-
-        <h2>ملفاتي المرفوعة</h2>
-        
-        <div class="actions-group">
-            <button id="downloadAllBtn" class="btn-download-all">📦 تحميل كل الملفات (ZIP)</button>
-            <button id="deleteAllBtn" class="btn-delete-all">🗑️ حذف جميع الملفات</button>
+            <!-- نموذج رفع الملفات -->
+            <form id="uploadForm">
+                <input type="file" id="fileInput" multiple required>
+                <button type="submit">⬆️ رفع الملف الآن</button>
+            </form>
         </div>
 
-        <ul id="fileList"></ul>
+        <!-- أزرار إدارة الملفات والربط السحابي -->
+        <div>
+            <div class="actions-group">
+                <button type="button" class="btn-download-all" id="downloadAllBtn">📦 تحميل الكل (ZIP)</button>
+                <button type="button" class="btn-delete-all" id="deleteAllBtn">🗑️ حذف الكل</button>
+            </div>
+
+            <!-- زر جوجل درايف الجديد -->
+            <div style="margin-bottom: 10px;">
+                <button type="button" id="driveSyncBtn" class="btn-drive" style="width: 100%;">☁️ حفظ نسخة على Google Drive</button>
+            </div>
+
+            <hr>
+
+            <!-- قائمة الملفات -->
+            <ul id="fileList"></ul>
+        </div>
     </div>
 
+    <!-- مكتبات مساعدة (JSZip & FileSaver) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    
+    <!-- مكتبة Google API -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
     <script src="script.js"></script>
 </body>
 </html>
