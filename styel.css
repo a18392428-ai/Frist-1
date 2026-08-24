@@ -135,6 +135,19 @@ button[type="submit"] {
 .btn-download-all { background-color: #2980b9; }
 .btn-delete-all { background-color: #c0392b; }
 
+/* تصميم زر Google Drive */
+.btn-drive {
+    background-color: #4285F4;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
 hr {
     border: 0;
     border-top: 2px solid rgba(255, 255, 255, 0.3);
