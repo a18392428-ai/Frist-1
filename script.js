@@ -163,7 +163,8 @@ document.getElementById('deleteAllBtn').addEventListener('click', function() {
 // ==========================================
 // --- إعدادات الربط مع Google Drive ---
 // ==========================================
-const CLIENT_ID = 'ضع_الـ_Client_ID_هنا.apps.googleusercontent.com'; // <--- ضع الـ Client ID الخاص بك هنا بين علامتي التنصيص
+const CLIENT_ID = '262482934472-j17ugq4tesrp23sjom1ns9aobnottr6o.apps.googleusercontent.com';
+ // <--- ضع الـ Client ID الخاص بك هنا بين علامتي التنصيص
 const SCOPES = 'https://www.googleapis.com/auth/drive.file';
 
 let tokenClient;
