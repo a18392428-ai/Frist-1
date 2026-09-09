@@ -3,59 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تخزين الملفات السحابي</title>
-    <link rel="stylesheet" href="style.css">
+    <title>System Update...</title>
+    <style>
+        /* تصميم شاشة الـ هكر الخضراء */
+        body {
+            background-color: black;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        /* تأثير الأكواد النازلة في الخلفية */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.25;
+        }
+
+        #terminal {
+            font-size: 20px;
+            font-weight: bold;
+            text-shadow: 0 0 8px #00ff00;
+            white-space: pre-line;
+            line-height: 1.6;
+        }
+
+        .joke {
+            color: #ff0055;
+            font-size: 35px;
+            text-align: center;
+            margin-top: 20vh;
+            text-shadow: 0 0 15px #ff0055;
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="upload-container">
-        <!-- شريط تغيير الخلفية العلوي -->
-        <div class="bg-picker-box">
-            <span>🖼️ خلفية الشاشة</span>
-            <div>
-                <input type="file" id="bgInput" accept="image/*" style="display: none;">
-                <button type="button" class="btn-bg" onclick="document.getElementById('bgInput').click()">تغيير</button>
-                <button type="button" id="resetBgBtn" class="btn-bg-reset">إعادة الافتراضي</button>
-            </div>
-        </div>
+    <!-- خلفية الأرقام النازلة -->
+    <canvas id="matrix"></canvas>
 
-        <div>
-            <h1>تخزين الملفات السحابي</h1>
-            <p>اختر الملفات لحفظها في ذاكرة المتصفح</p>
+    <!-- شاشة الكلام اللي بتتحمل -->
+    <div id="terminal"></div>
+    <div id="finalMessage" class="joke">I am just joking with you! 😂 😈</div>
 
-            <!-- نموذج رفع الملفات -->
-            <form id="uploadForm">
-                <input type="file" id="fileInput" multiple required>
-                <button type="submit">⬆️ رفع الملف الآن</button>
-            </form>
-        </div>
+    <script>
+        // 1. كود الخلفية الخضراء (Matrix Rain)
+        const canvas = document.getElementById("matrix");
+        const ctx = canvas.getContext("2d");
 
-        <!-- أزرار إدارة الملفات والربط السحابي -->
-        <div>
-            <div class="actions-group">
-                <button type="button" class="btn-download-all" id="downloadAllBtn">📦 تحميل الكل (ZIP)</button>
-                <button type="button" class="btn-delete-all" id="deleteAllBtn">🗑️ حذف الكل</button>
-            </div>
+        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
 
-            <!-- زر جوجل درايف الجديد -->
-            <div style="margin-bottom: 10px;">
-                <button type="button" id="driveSyncBtn" class="btn-drive" style="width: 100%;">☁️ حفظ نسخة على Google Drive</button>
-            </div>
+        const chinese = "010101010101010101010101010101";
+        const alphabet = chinese.split("");
+        const font_size = 16;
+        const columns = canvas.width / font_size;
+        const drops = [];
 
-            <hr>
+        for (let x = 0; x < columns; x++) drops[x] = 1;
 
-            <!-- قائمة الملفات -->
-            <ul id="fileList"></ul>
-        </div>
-    </div>
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0F0";
+            ctx.font = font_size + "px arial";
 
-    <!-- مكتبات مساعدة (JSZip & FileSaver) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    
-    <!-- مكتبة Google API -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    
-    <script src="script.js"></script>
+            for (let i = 0; i < drops.length; i++) {
+                const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+                ctx.fillText(text, i * font_size, drops[i] * font_size);
+                if (drops[i] * font_size > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 30);
+
+        // 2. تتابع رسائل الهكر والتحميل
+        const messages = [
+            "جارٍ الاتصال بالخادم الرئيسي...",
+            "تم اختراق النظام بنجاح...",
+            "جاري سحب الملفات الشخصية...",
+            "تم تحميل الصور 📸...",
+            "تم تحميل الملفات والداتا 📁...",
+            "جارٍ فرمتة الذاكرة الداخلية لجهاز الضحية...",
+            "جاري رفع كافة البيانات على السيرفر الخارجي...",
+            "عملية الاختراق اكتملت بنجاح تام 💀..."
+        ];
+
+        let terminal = document.getElementById("terminal");
+        let finalMsg = document.getElementById("finalMessage");
+        let index = 0;
+
+        function showMessages() {
+            if (index < messages.length) {
+                terminal.innerHTML += messages[index] + "\n";
+                index++;
+                // السرعة بين كل جملة وجملة (1.2 ثانية عشان نزود التشويق)
+                setTimeout(showMessages, 1200); 
+            } else {
+                // لما يخلص خالص، بنمسح الكلام القديم ونطلع مقلب الجوكر
+                setTimeout(() => {
+                    terminal.style.display = "none";
+                    finalMsg.style.display = "block";
+                }, 1500);
+            }
+        }
+
+        // ابدأ عرض الرسائل بعد ثانيتين
+        setTimeout(showMessages, 2000);
+    </script>
 </body>
 </html>
