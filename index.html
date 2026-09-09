@@ -11,21 +11,8 @@
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 20px;
-            overflow: hidden;
+            overflow-x: hidden;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.25;
         }
 
         #terminal {
@@ -33,59 +20,26 @@
             font-weight: bold;
             text-shadow: 0 0 8px #00ff00;
             white-space: pre-line;
-            line-height: 1.5;
-            max-height: 85vh;
-            overflow-y: hidden;
+            line-height: 1.6;
         }
 
         .joke {
             color: #ff0055;
-            font-size: 35px;
+            font-size: 32px;
             text-align: center;
             margin-top: 25vh;
             text-shadow: 0 0 15px #ff0055;
             display: none;
+            direction: ltr; /* عشان الكلام الإنجليزي يتكتب صح */
         }
     </style>
 </head>
 <body>
 
-    <canvas id="matrix"></canvas>
-
     <div id="terminal"></div>
-    <div id="finalMessage" class="joke">I am just joking with you! 😂 😈</div>
+    <div id="finalMessage" class="joke">Hacking Successful. System Compromised. 💀</div>
 
     <script>
-        const canvas = document.getElementById("matrix");
-        const ctx = canvas.getContext("2d");
-
-        canvas.height = window.innerHeight;
-        canvas.width = window.innerWidth;
-
-        const chinese = "010101010101010101010101010101";
-        const alphabet = chinese.split("");
-        const font_size = 16;
-        const columns = canvas.width / font_size;
-        const drops = [];
-
-        for (let x = 0; x < columns; x++) drops[x] = 1;
-
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#0F0";
-            ctx.font = font_size + "px arial";
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = alphabet[Math.floor(Math.random() * alphabet.length)];
-                ctx.fillText(text, i * font_size, drops[i] * font_size);
-                if (drops[i] * font_size > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            }
-        }
-        setInterval(drawMatrix, 30);
-
-        // تم إضافة الفواصل (,) التصحيحية هنا لكل العناصر
         const messages = [
             "جارٍ الاتصال بالخادم الرئيسي عن بُعد...",
             "جاري تخطي الجدار الناري (Firewall)...",
@@ -102,7 +56,7 @@
             "جاري إرسال البيانات (100% تم بنجاح)...",
             "جارٍ فرمتة النظام الأساسي للجهاز 💀...",
             "عملية الاختراق اكتملت بنجاح تام...",
-            "ستنفجر بردة الهاتف خلال:",
+            "ستنفجر برودة الهاتف خلال:",
             "3...",
             "2...",
             "1...",
@@ -117,7 +71,7 @@
             if (index < messages.length) {
                 terminal.innerHTML += messages[index] + "\n";
                 index++;
-                setTimeout(showMessages, 1500); 
+                setTimeout(showMessages, 1200); 
             } else {
                 setTimeout(() => {
                     terminal.style.display = "none";
@@ -126,7 +80,7 @@
             }
         }
 
-        setTimeout(showMessages, 2000);
+        setTimeout(showMessages, 1000);
     </script>
 </body>
 </html>
