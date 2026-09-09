@@ -11,8 +11,22 @@
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 20px;
-            overflow-x: hidden;
+            overflow: hidden;
             height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        /* خلفية الأرقام النازلة (Matrix Rain) */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.35; /* شفافية عشان تظهر ورا الكلام بوضوح */
         }
 
         #terminal {
@@ -21,25 +35,63 @@
             text-shadow: 0 0 8px #00ff00;
             white-space: pre-line;
             line-height: 1.6;
+            max-height: 90vh;
+            overflow-y: hidden;
+            z-index: 1;
         }
 
         .joke {
             color: #ff0055;
             font-size: 32px;
             text-align: center;
-            margin-top: 25vh;
+            margin-top: 30vh;
             text-shadow: 0 0 15px #ff0055;
             display: none;
-            direction: ltr; /* عشان الكلام الإنجليزي يتكتب صح */
+            direction: ltr;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
 
+    <!-- عنصر الخلفية المتحركة -->
+    <canvas id="matrix"></canvas>
+
     <div id="terminal"></div>
     <div id="finalMessage" class="joke">Hacking Successful. System Compromised. 💀</div>
 
     <script>
+        // 1. كود الأرقام الخضراء النازلة في الخلفية
+        const canvas = document.getElementById("matrix");
+        const ctx = canvas.getContext("2d");
+
+        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
+
+        const chinese = "101010101010101010101010"; // الأرقام الثنائية اللي طلبتها
+        const alphabet = chinese.split("");
+        const font_size = 16;
+        const columns = canvas.width / font_size;
+        const drops = [];
+
+        for (let x = 0; x < columns; x++) drops[x] = 1;
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0F0";
+            ctx.font = font_size + "px arial";
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+                ctx.fillText(text, i * font_size, drops[i] * font_size);
+                if (drops[i] * font_size > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 30);
+
+        // 2. رسائل التحميل والاختراق
         const messages = [
             "جارٍ الاتصال بالخادم الرئيسي عن بُعد...",
             "جاري تخطي الجدار الناري (Firewall)...",
