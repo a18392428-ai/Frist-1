@@ -53,7 +53,7 @@
     <canvas id="matrix"></canvas>
 
     <div id="terminal"></div>
-    <div id="finalMessage" class="joke">You have been hacked.😇</div>
+    <div id="finalMessage" class="joke">I am just joking with you! 😂 😈</div>
 
     <script>
         const canvas = document.getElementById("matrix");
@@ -85,7 +85,7 @@
         }
         setInterval(drawMatrix, 30);
 
-        // رسائل تحميل أكتر وأطول عشان تقلق الضحية كويس
+        // تم إضافة الفواصل (,) التصحيحية هنا لكل العناصر
         const messages = [
             "جارٍ الاتصال بالخادم الرئيسي عن بُعد...",
             "جاري تخطي الجدار الناري (Firewall)...",
@@ -101,12 +101,12 @@
             "جاري إرسال البيانات (89% مكتمل)...",
             "جاري إرسال البيانات (100% تم بنجاح)...",
             "جارٍ فرمتة النظام الأساسي للجهاز 💀...",
-            "عملية الاختراق اكتملت بنجاح تام..."
-            "ستنفجر بردة الهاتف خلال:"
-        "3"
-        "2"
-        "1"
-        "🌋"
+            "عملية الاختراق اكتملت بنجاح تام...",
+            "ستنفجر بردة الهاتف خلال:",
+            "3...",
+            "2...",
+            "1...",
+            "🌋 BOOM!"
         ];
 
         let terminal = document.getElementById("terminal");
@@ -117,7 +117,6 @@
             if (index < messages.length) {
                 terminal.innerHTML += messages[index] + "\n";
                 index++;
-                // زودت الوقت بين كل جملة والتانية لـ 1.5 ثانية عشان ياخد وقته
                 setTimeout(showMessages, 1500); 
             } else {
                 setTimeout(() => {
