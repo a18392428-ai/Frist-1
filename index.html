@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Update...</title>
     <style>
-        /* تصميم شاشة الـ هكر الخضراء */
         body {
             background-color: black;
             color: #00ff00;
@@ -19,7 +18,6 @@
             justify-content: flex-start;
         }
 
-        /* تأثير الأكواد النازلة في الخلفية */
         canvas {
             position: fixed;
             top: 0;
@@ -31,18 +29,20 @@
         }
 
         #terminal {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             text-shadow: 0 0 8px #00ff00;
             white-space: pre-line;
-            line-height: 1.6;
+            line-height: 1.5;
+            max-height: 85vh;
+            overflow-y: hidden;
         }
 
         .joke {
             color: #ff0055;
             font-size: 35px;
             text-align: center;
-            margin-top: 20vh;
+            margin-top: 25vh;
             text-shadow: 0 0 15px #ff0055;
             display: none;
         }
@@ -50,15 +50,12 @@
 </head>
 <body>
 
-    <!-- خلفية الأرقام النازلة -->
     <canvas id="matrix"></canvas>
 
-    <!-- شاشة الكلام اللي بتتحمل -->
     <div id="terminal"></div>
     <div id="finalMessage" class="joke">I am just joking with you! 😂 😈</div>
 
     <script>
-        // 1. كود الخلفية الخضراء (Matrix Rain)
         const canvas = document.getElementById("matrix");
         const ctx = canvas.getContext("2d");
 
@@ -88,16 +85,23 @@
         }
         setInterval(drawMatrix, 30);
 
-        // 2. تتابع رسائل الهكر والتحميل
+        // رسائل تحميل أكتر وأطول عشان تقلق الضحية كويس
         const messages = [
-            "جارٍ الاتصال بالخادم الرئيسي...",
-            "تم اختراق النظام بنجاح...",
-            "جاري سحب الملفات الشخصية...",
-            "تم تحميل الصور 📸...",
-            "تم تحميل الملفات والداتا 📁...",
-            "جارٍ فرمتة الذاكرة الداخلية لجهاز الضحية...",
-            "جاري رفع كافة البيانات على السيرفر الخارجي...",
-            "عملية الاختراق اكتملت بنجاح تام 💀..."
+            "جارٍ الاتصال بالخادم الرئيسي عن بُعد...",
+            "جاري تخطي الجدار الناري (Firewall)...",
+            "تم اختراق النظام بنجاح 🟢...",
+            "جاري فحص الذاكرة العشوائية (RAM)...",
+            "تم العثور على ملفات الحسابات وكلمات المرور 🔑...",
+            "جاري سحب الصور الشخصية والاستوديو 📸...",
+            "تم تحميل 142 صورة بنجاح...",
+            "جاري سحب جهات الاتصال ورسائل واتساب 📱...",
+            "جارٍ تشفير الملفات لمنع الاسترجاع (Ransomware Mode)...",
+            "جاري الاتصال بالسيرفر الخارجي للرفع...",
+            "جاري إرسال البيانات (54% مكتمل)...",
+            "جاري إرسال البيانات (89% مكتمل)...",
+            "جاري إرسال البيانات (100% تم بنجاح)...",
+            "جارٍ فرمتة النظام الأساسي للجهاز 💀...",
+            "عملية الاختراق اكتملت بنجاح تام..."
         ];
 
         let terminal = document.getElementById("terminal");
@@ -108,18 +112,16 @@
             if (index < messages.length) {
                 terminal.innerHTML += messages[index] + "\n";
                 index++;
-                // السرعة بين كل جملة وجملة (1.2 ثانية عشان نزود التشويق)
-                setTimeout(showMessages, 1200); 
+                // زودت الوقت بين كل جملة والتانية لـ 1.5 ثانية عشان ياخد وقته
+                setTimeout(showMessages, 1500); 
             } else {
-                // لما يخلص خالص، بنمسح الكلام القديم ونطلع مقلب الجوكر
                 setTimeout(() => {
                     terminal.style.display = "none";
                     finalMsg.style.display = "block";
-                }, 1500);
+                }, 2000);
             }
         }
 
-        // ابدأ عرض الرسائل بعد ثانيتين
         setTimeout(showMessages, 2000);
     </script>
 </body>
