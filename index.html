@@ -11,12 +11,10 @@
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 20px;
-            /* شلنا الـ overflow: hidden عشان الصفحة تسمح بالنزول لتحت وتتحرك براحتها */
-            overflow-y: auto; 
+            overflow-y: auto;
             height: 100vh;
         }
 
-        /* خلفية الأرقام (101010) ثابتة في الخلفية وبتتحرك */
         canvas {
             position: fixed;
             top: 0;
@@ -24,6 +22,40 @@
             width: 100%;
             height: 100%;
             z-index: -1;
+        }
+
+        /* زرار البداية عشان المتصفح يوافق على الصوت */
+        #start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        #start-btn {
+            background-color: black;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 15px #00ff00;
+            transition: 0.3s;
+        }
+
+        #start-btn:hover {
+            background-color: #00ff00;
+            color: black;
+            box-shadow: 0 0 25px #00ff00;
         }
 
         #terminal {
@@ -35,6 +67,7 @@
             position: relative;
             z-index: 2;
             padding-bottom: 50px;
+            display: none; /* مخفي لحد ما يضغط زرار البداية */
         }
 
         .cursor {
@@ -69,11 +102,15 @@
 
     <canvas id="matrix"></canvas>
 
+    <!-- شاشة البداية اللي بتضمن تشغيل الصوت -->
+    <div id="start-screen">
+        <button id="start-btn" onclick="startPrank()">[ اضغط هنا لفحص النظام ]</button>
+    </div>
+
     <div id="terminal"><span id="text-output"></span><span class="cursor"></span></div>
     <div id="finalMessage" class="joke">Hacking Successful. System Compromised. 💀</div>
 
     <script>
-        // 1. نظام تشغيل الصوتيات
         let audioCtx = null;
 
         function initAudio() {
@@ -115,7 +152,7 @@
             } catch(e) {}
         }
 
-        // 2. خلفية الأرقام الثنائية (Matrix Rain)
+        // خلفية الأرقام النازلة
         const canvas = document.getElementById("matrix");
         const ctx = canvas.getContext("2d");
 
@@ -145,7 +182,6 @@
         }
         setInterval(drawMatrix, 35);
 
-        // 3. رسائل المقلب
         const messages = [
             "جارٍ الاتصال بالخادم الرئيسي عن بُعد...",
             "جاري تخطي الجدار الناري (Firewall)...",
@@ -175,6 +211,14 @@
         let terminalContainer = document.getElementById("terminal");
         let finalMsg = document.getElementById("finalMessage");
 
+        // دالة التشغيل لما يضغط على الزرار
+        function startPrank() {
+            initAudio(); // تفعيل تشغيل الصوت رسمياً من قِبل المتصفح
+            document.getElementById("start-screen").style.display = "none"; // إخفاء شاشة البداية
+            terminalContainer.style.display = "block"; // إظهار التيرموكس
+            typeWriter(); // بدء المقلب
+        }
+
         function typeWriter() {
             if (msgIndex < messages.length) {
                 let currentMessage = messages[msgIndex];
@@ -183,10 +227,7 @@
                     outputDiv.innerHTML += currentMessage.charAt(charIndex);
                     playKeySound();
                     charIndex++;
-                    
-                    // التمرير التلقائي لأسفل الشاشة مع كل حرف يتكتب
                     window.scrollTo(0, document.body.scrollHeight);
-                    
                     setTimeout(typeWriter, 35); 
                 } else {
                     outputDiv.innerHTML += "\n";
@@ -200,19 +241,10 @@
                 setTimeout(() => {
                     terminalContainer.style.display = "none";
                     finalMsg.style.display = "block";
-                    window.scrollTo(0, 0); // نرجع لأول الصفحة عشان رسالة النهاية تظهر في النص تماماً
+                    window.scrollTo(0, 0);
                 }, 1500);
             }
         }
-
-        window.addEventListener('click', () => {
-            initAudio();
-        }, { once: true });
-
-        setTimeout(() => {
-            initAudio();
-            typeWriter();
-        }, 1000);
     </script>
 </body>
 </html>
