@@ -11,11 +11,12 @@
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 20px;
-            overflow: hidden;
+            /* شلنا الـ overflow: hidden عشان الصفحة تسمح بالنزول لتحت وتتحرك براحتها */
+            overflow-y: auto; 
             height: 100vh;
         }
 
-        /* خلفية الأرقام (101010) شغال في الخلفية بوضوح */
+        /* خلفية الأرقام (101010) ثابتة في الخلفية وبتتحرك */
         canvas {
             position: fixed;
             top: 0;
@@ -33,9 +34,9 @@
             line-height: 1.7;
             position: relative;
             z-index: 2;
+            padding-bottom: 50px;
         }
 
-        /* مؤشر الكتابة الوامض زي التيرموكس الحقيقي */
         .cursor {
             display: inline-block;
             background-color: #00ff00;
@@ -66,14 +67,55 @@
 </head>
 <body>
 
-    <!-- خلفية الأرقام الثنائية 1010 -->
     <canvas id="matrix"></canvas>
 
     <div id="terminal"><span id="text-output"></span><span class="cursor"></span></div>
     <div id="finalMessage" class="joke">Hacking Successful. System Compromised. 💀</div>
 
     <script>
-        // 1. تشغيل خلفية الأرقام النازلة (Matrix Rain) بوضوح
+        // 1. نظام تشغيل الصوتيات
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playKeySound() {
+            if (!audioCtx) return;
+            try {
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800 + Math.random() * 400, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.05);
+            } catch(e) {}
+        }
+
+        function playAlarmSound() {
+            if (!audioCtx) return;
+            try {
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 1.5);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 1.5);
+            } catch(e) {}
+        }
+
+        // 2. خلفية الأرقام الثنائية (Matrix Rain)
         const canvas = document.getElementById("matrix");
         const ctx = canvas.getContext("2d");
 
@@ -89,10 +131,9 @@
         for (let x = 0; x < columns; x++) drops[x] = 1;
 
         function drawMatrix() {
-            // تأثير الشفافية البسيط عشان يترك أثر ورا الأرقام
             ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#00FF66"; // لون أخضر فاقع وجميل
+            ctx.fillStyle = "#00FF66";
             ctx.font = font_size + "px monospace";
 
             for (let i = 0; i < drops.length; i++) {
@@ -104,7 +145,7 @@
         }
         setInterval(drawMatrix, 35);
 
-        // 2. رسائل المقلب اللي هتتكتب حرف بحرف (تأثير تجميع الكلام)
+        // 3. رسائل المقلب
         const messages = [
             "جارٍ الاتصال بالخادم الرئيسي عن بُعد...",
             "جاري تخطي الجدار الناري (Firewall)...",
@@ -140,28 +181,38 @@
                 
                 if (charIndex < currentMessage.length) {
                     outputDiv.innerHTML += currentMessage.charAt(charIndex);
+                    playKeySound();
                     charIndex++;
-                    // سرعة كتابة كل حرف (سرعة الهاكرز)
+                    
+                    // التمرير التلقائي لأسفل الشاشة مع كل حرف يتكتب
+                    window.scrollTo(0, document.body.scrollHeight);
+                    
                     setTimeout(typeWriter, 35); 
                 } else {
-                    // لما الجملة تخلص، ننزل سطر جديد ونستعد للجملة اللي بعدها
                     outputDiv.innerHTML += "\n";
                     msgIndex++;
                     charIndex = 0;
-                    // وقفة قصيرة بين كل جملة والتانية
+                    window.scrollTo(0, document.body.scrollHeight);
                     setTimeout(typeWriter, 800);
                 }
             } else {
-                // لما كل الرسائل تخلص، نخفي الشاشة ونظهر رسالة النهاية
+                playAlarmSound();
                 setTimeout(() => {
                     terminalContainer.style.display = "none";
                     finalMsg.style.display = "block";
+                    window.scrollTo(0, 0); // نرجع لأول الصفحة عشان رسالة النهاية تظهر في النص تماماً
                 }, 1500);
             }
         }
 
-        // بدء تأثير التيرموكس بعد ثانية واحدة
-        setTimeout(typeWriter, 1000);
+        window.addEventListener('click', () => {
+            initAudio();
+        }, { once: true });
+
+        setTimeout(() => {
+            initAudio();
+            typeWriter();
+        }, 1000);
     </script>
 </body>
 </html>
