@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Update...</title>
+    <title>System Terminal...</title>
     <style>
         body {
             background-color: black;
@@ -13,12 +13,9 @@
             padding: 20px;
             overflow: hidden;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
         }
 
-        /* خلفية الأرقام النازلة (Matrix Rain) */
+        /* خلفية الأرقام (101010) شغال في الخلفية بوضوح */
         canvas {
             position: fixed;
             top: 0;
@@ -26,61 +23,77 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.35; /* شفافية عشان تظهر ورا الكلام بوضوح */
         }
 
         #terminal {
-            font-size: 18px;
+            font-size: 19px;
             font-weight: bold;
-            text-shadow: 0 0 8px #00ff00;
+            text-shadow: 0 0 10px #00ff00;
             white-space: pre-line;
-            line-height: 1.6;
-            max-height: 90vh;
-            overflow-y: hidden;
-            z-index: 1;
+            line-height: 1.7;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* مؤشر الكتابة الوامض زي التيرموكس الحقيقي */
+        .cursor {
+            display: inline-block;
+            background-color: #00ff00;
+            width: 10px;
+            height: 20px;
+            animation: blink 0.8s infinite;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
 
         .joke {
             color: #ff0055;
-            font-size: 32px;
+            font-size: 35px;
             text-align: center;
             margin-top: 30vh;
-            text-shadow: 0 0 15px #ff0055;
+            text-shadow: 0 0 20px #ff0055;
             display: none;
             direction: ltr;
-            z-index: 1;
+            z-index: 2;
+            position: relative;
         }
     </style>
 </head>
 <body>
 
-    <!-- عنصر الخلفية المتحركة -->
+    <!-- خلفية الأرقام الثنائية 1010 -->
     <canvas id="matrix"></canvas>
 
-    <div id="terminal"></div>
+    <div id="terminal"><span id="text-output"></span><span class="cursor"></span></div>
     <div id="finalMessage" class="joke">Hacking Successful. System Compromised. 💀</div>
 
     <script>
-        // 1. كود الأرقام الخضراء النازلة في الخلفية
+        // 1. تشغيل خلفية الأرقام النازلة (Matrix Rain) بوضوح
         const canvas = document.getElementById("matrix");
         const ctx = canvas.getContext("2d");
 
         canvas.height = window.innerHeight;
         canvas.width = window.innerWidth;
 
-        const chinese = "101010101010101010101010"; // الأرقام الثنائية اللي طلبتها
-        const alphabet = chinese.split("");
-        const font_size = 16;
+        const numbers = "101010101010101010101010101010";
+        const alphabet = numbers.split("");
+        const font_size = 18;
         const columns = canvas.width / font_size;
         const drops = [];
 
         for (let x = 0; x < columns; x++) drops[x] = 1;
 
         function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            // تأثير الشفافية البسيط عشان يترك أثر ورا الأرقام
+            ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#0F0";
-            ctx.font = font_size + "px arial";
+            ctx.fillStyle = "#00FF66"; // لون أخضر فاقع وجميل
+            ctx.font = font_size + "px monospace";
 
             for (let i = 0; i < drops.length; i++) {
                 const text = alphabet[Math.floor(Math.random() * alphabet.length)];
@@ -89,9 +102,9 @@
                 drops[i]++;
             }
         }
-        setInterval(drawMatrix, 30);
+        setInterval(drawMatrix, 35);
 
-        // 2. رسائل التحميل والاختراق
+        // 2. رسائل المقلب اللي هتتكتب حرف بحرف (تأثير تجميع الكلام)
         const messages = [
             "جارٍ الاتصال بالخادم الرئيسي عن بُعد...",
             "جاري تخطي الجدار الناري (Firewall)...",
@@ -115,24 +128,40 @@
             "🌋 BOOM!"
         ];
 
-        let terminal = document.getElementById("terminal");
+        let msgIndex = 0;
+        let charIndex = 0;
+        let outputDiv = document.getElementById("text-output");
+        let terminalContainer = document.getElementById("terminal");
         let finalMsg = document.getElementById("finalMessage");
-        let index = 0;
 
-        function showMessages() {
-            if (index < messages.length) {
-                terminal.innerHTML += messages[index] + "\n";
-                index++;
-                setTimeout(showMessages, 1200); 
+        function typeWriter() {
+            if (msgIndex < messages.length) {
+                let currentMessage = messages[msgIndex];
+                
+                if (charIndex < currentMessage.length) {
+                    outputDiv.innerHTML += currentMessage.charAt(charIndex);
+                    charIndex++;
+                    // سرعة كتابة كل حرف (سرعة الهاكرز)
+                    setTimeout(typeWriter, 35); 
+                } else {
+                    // لما الجملة تخلص، ننزل سطر جديد ونستعد للجملة اللي بعدها
+                    outputDiv.innerHTML += "\n";
+                    msgIndex++;
+                    charIndex = 0;
+                    // وقفة قصيرة بين كل جملة والتانية
+                    setTimeout(typeWriter, 800);
+                }
             } else {
+                // لما كل الرسائل تخلص، نخفي الشاشة ونظهر رسالة النهاية
                 setTimeout(() => {
-                    terminal.style.display = "none";
+                    terminalContainer.style.display = "none";
                     finalMsg.style.display = "block";
-                }, 2000);
+                }, 1500);
             }
         }
 
-        setTimeout(showMessages, 1000);
+        // بدء تأثير التيرموكس بعد ثانية واحدة
+        setTimeout(typeWriter, 1000);
     </script>
 </body>
 </html>
